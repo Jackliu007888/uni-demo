@@ -1,5 +1,20 @@
 # 小程序通用开发框架
 
+## git 工作流
+
+- master 分支 最新的稳定代码
+- vx.x.x 分支 版本分支，x.x.x 是此次开发的版本号。
+- feat-xxx 分支 特性（新的功能）分支
+- fix-xxx 分支 修复分支
+
+### 正常开发迭代
+
+![正常开发迭代](http://www.plantuml.com/plantuml/svg/SoWkIImgAStDuSfDB2v9BLBGrRLJA3FKCz0pi59uihiF8lgqe_rf-oweEB9AfRJKn1BTn9GKtQJIafByF2LCJMWgiEjEoo_AnQSN9C-5fXox4K_tD3pjd_XqNS-pZWbS6Cx3vMWYTC42vUcS5UcP9Jc9IK0DBxPkpmMwTGD4JkVfpcrF9tG0oMUT3S_cT2Rdv-Pcbc1rDjc6GIHHp7ZMF-7PrcxY_Vfa_xgdItg1MbwidvfKcax8ks0t09q5Ytqa5q3Y2iaNJtPqWRq0aNY_fmUaTKCRn8md-nS-Qrp_RCfEO1Z330C1XzIy56021000)
+
+### 线上 bug 修复
+
+![线上 bug 修复](http://www.plantuml.com/plantuml/svg/SoWkIImgAStDuSfDB2v9BLBGrRLJK4hBhD1DAYqfoS_JJSx9JCvMib9uihiFek9fH_lJzbqAw4guC3NXDcl_kgTBUbzEN_ToqOodExSzszhzOlrKN0P0R0Kx83sp92SnwMd_n1TRj-SMFPtG0TJyj6C3H0MNGsfU2j0Z0000)
+
 ## 开发规范
 
 - 利用自动化工具 eslint 、prettier、stylelint 做代码检测
