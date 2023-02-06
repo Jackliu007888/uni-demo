@@ -11,18 +11,17 @@ export interface ResultData<T = any> extends Result {
 
 // * 分页响应参数
 export interface ResPage<T> {
-	list: T[]
-	pager: {
-		count: number
-		limit: number
-		total: number
-	}
+	records: T[]
+	size: number // 每页数量
+	total: number // 总条数
+	current: number // 当前页
+	pages: number // 总页数
 }
 
 // * 分页请求参数
 export interface ReqPage {
-	page: number
-	limit: number
+	pageNum: number
+	pageSize: number
 }
 
 export interface ReqId {

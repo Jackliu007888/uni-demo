@@ -1,32 +1,45 @@
-import { ENV_BASE_URL, TOKEN } from '@/utils/constants'
+/*
+ * @Description:
+ * @Author: 刘用坚
+ * @Date: 2023-02-01 15:14:18
+ * @LastEditors: 刘用坚
+ * @LastEditTime: 2023-02-06 16:03:58
+ */
+import { ENV_BASE_URL, AUTHORIZATION } from '@/utils/constants'
+import { getTenantId, getToken, setToken } from '../utils/login'
 
 type methodType = 'POST' | 'GET' | 'PUT' | 'DELETE'
 
 export interface Result<T> {
 	code: string | number
-	message: string
+	msg: string
 	data: T
+	error_description?: string
 }
 
 const defaltConfig = {
 	baseUrl: ENV_BASE_URL,
 	header: {
-		'request-source': 1,
-		space: '',
+		Authorization: `Basic ${AUTHORIZATION}`,
+		'User-Type': 'merchant',
 	},
-	timeout: 10000,
+	timeout: 30000,
 }
 
 class Http {
-	// eslint-disable-next-line class-methods-use-this
 	request<T>(method: methodType, url: string, data: any, config?: any): Promise<T> {
+		const token = getToken()
+		const tenantId = getTenantId()
+
 		const task = uni.request({
 			url: url.startsWith('http') ? url : `${defaltConfig.baseUrl}${url}`,
 			data,
 			method,
 			header: {
 				...defaltConfig.header,
-				...config.header,
+				...config?.header,
+				'Blade-Auth': `bearer ${token}`,
+				'Tenant-Id': tenantId,
 			},
 			...config,
 		})
@@ -36,18 +49,18 @@ class Http {
 				const resp: any = await task
 
 				const respData = resp.data as Result<T>
-				if (respData?.code === 0) {
+				if (respData?.code === 200) {
 					resolve(respData.data)
 					return
 				}
 				if (respData.code === 401) {
 					uni.showModal({
 						title: '提示',
-						content: respData?.message || '提交失败',
+						content: respData.msg || '提交失败',
 						showCancel: false,
 						success(res) {
 							// store.commit('app/SET_TOKEN', '')
-							uni.setStorageSync(TOKEN, '')
+							setToken('')
 
 							// @ts-ignore
 							uni.$http.setHeader({
@@ -56,10 +69,15 @@ class Http {
 						},
 					})
 
-					reject(new Error(respData?.message || '请求失败'))
+					reject(new Error(respData?.msg || '请求失败'))
 					return
 				}
-				reject(new Error(respData?.message || '请求失败'))
+				// uni.showToast({
+				// 	title: respData.msg || '请求失败',
+				// 	icon: 'none',
+				// 	duration: 2000,
+				// })
+				reject(new Error(respData?.msg || '请求失败'))
 			} catch (error) {
 				reject(error)
 			}
